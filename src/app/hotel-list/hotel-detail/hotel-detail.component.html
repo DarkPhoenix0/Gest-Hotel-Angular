@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="card" >
+    <div class="card-header text-white bg-info">
+      {{hotel.hotelName | uppercase}}
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="">
+          <div class="row">
+            <div class="col-md-4">Nom :</div>
+            <div class="col-md-8">{{hotel.hotelName}}</div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">description :</div>
+            <div class="col-md-8">{{hotel.description}}</div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">prix :</div>
+            <div class="col-md-8">{{hotel.price | currency: "EUR":"symbol":'1.2-2':'fr'}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="" style="width: 18rem;">
+        <img [src]="hotel.imageUrl" class="card-img-top" alt="...">
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <button class="btn btn-outline-info d-flex" (click)="onBackToList()">
+        <mat-icon>keyboard_arrow_left</mat-icon>
+        retour à la liste
+      </button>
+    </div>
+  </div>
+</div>

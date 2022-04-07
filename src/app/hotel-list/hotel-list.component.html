@@ -1,0 +1,146 @@
+<div class="container mt-4" *ngIf="hotels.length > 0">
+  <h3>{{ title }}</h3>
+  <button class="btn btn-primary mb-3 display_btn" (click)="togleShowBadge()">
+    <mat-icon>{{ showBadge ? "visibility_off" : "visibility" }}</mat-icon>
+    {{ showBadge ? "cacher" : "Afficher" }} nouveau
+  </button>
+  <hr />
+  <div class="my-2">
+    <div class="row mb-4">
+      <div class="col-md-2">
+        <button class="btn btn-outline-primary" (click)="open(content)">
+          Ajouter une Chambre
+        </button>
+      </div>
+      <div class="col-md-4">
+        <span>Flitre actuel : </span>
+        <strong>{{ hotelFilter }}</strong>
+      </div>
+      <div class="col-md-6 form-group">
+        <input type="text" class="form-control" [(ngModel)]="hotelFilter" />
+      </div>
+    </div>
+  </div>
+
+  <!-- liste des chambre -->
+
+  <div class="row row-cols-1 row-cols-md-3">
+    <div class="col mb-4" *ngFor="let hotel of filteredHotels">
+      <div class="card" style="width: 18rem">
+        <img
+          class="card-img-top"
+          [src]="hotel.imageUrl"
+          [title]="hotel.hotelName"
+          alt="Card image cap"
+        />
+        <div class="card-body">
+          <div>
+            <h5 class="card-title">{{ hotel.hotelName | uppercase }}</h5>
+            <button class="btn btn-secondary display_btn" (click)="openUpdate(hotel.hotelId, content)">
+              <mat-icon>settings</mat-icon>
+              modifier
+            </button>
+          </div>
+          <p class="card-text">{{ hotel.description }}</p>
+          <div class="d-flex justify-content-between align-items-baseline">
+            <p class="card-text">
+              {{ hotel.price | currency: "EUR":"symbol":"1.2-2":"fr" }}
+            </p>
+
+            <span
+              class="bg-info text-white rounded-circle btn"
+              [routerLink]="['/hotel', hotel.hotelId]"
+            >
+              ➤
+            </span>
+          </div>
+
+          <span class="badge badge-pill badge-info" *ngIf="showBadge"
+            >Nouveau</span
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- fenêtre modale Ajouter Nouvelle chambre-->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{modalTitle}}</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form >
+      <div class="mb-3">
+        <div class="col-auto">
+          <label class="sr-only" for="inlineFormInput">Ajouter un titre</label>
+          <input
+            type="text"
+            class="form-control mb-2"
+            name="titre"
+            id="inlineFormInput"
+            placeholder="titre ici !"
+            [(ngModel)]="titre"
+          />
+        </div>
+        <div class="col-auto">
+          <label class="sr-only" for="descInput">Description</label>
+          <input
+            type="text"
+            class="form-control mb-2"
+            name="description"
+            id="descInput"
+            placeholder="description"
+            [(ngModel)]="description"
+          />
+        </div>
+        <div class="col-auto">
+          <label class="sr-only" for="priceInput">Prix</label>
+          <input
+            type="text"
+            class="form-control mb-2"
+            name="price"
+            id="priceInput"
+            placeholder="description"
+            [(ngModel)]="prix"
+          />
+        </div>
+        <div class="custom-file mt-4">
+          <input
+            type="file"
+            class="custom-file-input"
+            name="image"
+            id="customFile"
+            [(ngModel)]="image"
+            (change)="onFileSelected($event)"
+            #fileUpload
+            accept="*.jpeg.png.jpg"
+          />
+          <label class="custom-file-label" for="customFile"></label>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="modal.close(onSave())"
+      [disabled]="titre === '' || description ==='' || prix <=0 || image ===''"
+    >
+      {{modaleType}}
+    </button>
+  </div>
+</ng-template>
+
+<!-- fenêtre modale Update  -->
+
+<hr />
+
+<pre>{{ closeResult }}</pre>
